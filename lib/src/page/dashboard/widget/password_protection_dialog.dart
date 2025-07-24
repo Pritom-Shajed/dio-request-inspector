@@ -3,10 +3,7 @@ import 'dart:ui';
 import 'package:dio_request_inspector/src/page/resources/app_color.dart';
 import 'package:flutter/material.dart';
 
-class PasswordProtectionDialog extends StatelessWidget {
-  final _formKey = GlobalKey<FormState>();
-
-  final TextEditingController _passwordController = TextEditingController();
+class PasswordProtectionDialog extends StatefulWidget {
   final String password;
 
   PasswordProtectionDialog({
@@ -15,14 +12,28 @@ class PasswordProtectionDialog extends StatelessWidget {
   });
 
   @override
+  State<PasswordProtectionDialog> createState() => _PasswordProtectionDialogState();
+}
+
+class _PasswordProtectionDialogState extends State<PasswordProtectionDialog> {
+  final _formKey = GlobalKey<FormState>();
+
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
       child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Dialog(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
               backgroundColor: const Color(0xFFE0E0E0),
               child: Container(
                   padding: const EdgeInsets.all(16),
@@ -42,10 +53,7 @@ class PasswordProtectionDialog extends StatelessWidget {
                         ),
                         const Text(
                           'Password Protection',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
+                          style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(
                           height: 16,
@@ -72,7 +80,7 @@ class PasswordProtectionDialog extends StatelessWidget {
                               return 'Please enter your password';
                             }
 
-                            if (value != password) {
+                            if (value != widget.password) {
                               return 'Your password is incorrect';
                             }
                             return null;
@@ -102,8 +110,7 @@ class PasswordProtectionDialog extends StatelessWidget {
                                 textStyle: const TextStyle(color: Colors.white),
                                 backgroundColor: Colors.white,
                               ),
-                              child: Text('Cancel',
-                                  style: TextStyle(color: AppColor.primary)),
+                              child: Text('Cancel', style: TextStyle(color: AppColor.primary)),
                             ),
                           ),
                           const SizedBox(
@@ -124,8 +131,7 @@ class PasswordProtectionDialog extends StatelessWidget {
                                 textStyle: const TextStyle(color: Colors.white),
                                 backgroundColor: AppColor.primary,
                               ),
-                              child: const Text('Submit',
-                                  style: TextStyle(color: Colors.white)),
+                              child: const Text('Submit', style: TextStyle(color: Colors.white)),
                             ),
                           ),
                         ]),
